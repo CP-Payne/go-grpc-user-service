@@ -1,0 +1,54 @@
+syntax = "proto3";
+option go_package = "/gen";
+
+
+service UserService {
+  // Fetch a user by ID
+  rpc GetUserByID(GetUserByIDRequest) returns (GetUserResponse);
+
+  // Fetch multiple users by their IDs
+  rpc GetUsersByIDs(GetUsersByIDsRequest) returns (GetUsersResponse);
+
+  // Search for users based on specified criteria
+  rpc SearchUsers(SearchUsersRequest) returns (GetUsersResponse);
+}
+
+// Request message for GetUserByID
+message GetUserByIDRequest {
+  int32 id = 1;
+}
+
+// Response message for GetUserByID
+message GetUserResponse {
+  UserData user = 1;
+}
+
+// Request message for GetUsersByIDs
+message GetUsersByIDsRequest {
+  repeated int32 ids = 1;
+}
+
+// Response message for GetUsersByIDs
+message GetUsersResponse {
+  repeated UserData users = 1;
+}
+
+// Request message for SearchUsers
+message SearchUsersRequest {
+  string first_name = 1;
+  string last_name = 2;
+  string city = 3;
+  bool married = 4;
+  float height_greater_than = 5;
+}
+
+// User data structure
+message UserData {
+  int32 id = 1;
+  string first_name = 2;
+  string last_name = 3;
+  string city = 4;
+  string phone = 5;
+  float height = 6;
+  bool married = 7;
+}
