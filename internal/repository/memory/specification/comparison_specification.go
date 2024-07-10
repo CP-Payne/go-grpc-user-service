@@ -36,3 +36,11 @@ type MarriedSpecification struct {
 func (s *MarriedSpecification) IsSatisfiedBy(ctx context.Context, user *model.UserData) bool {
 	return user.Married == s.Married
 }
+
+type WeightGreaterThanSpecification struct {
+	Weight float32
+}
+
+func (s *WeightGreaterThanSpecification) IsSatisfiedBy(ctx context.Context, user *model.UserData) bool {
+	return user.Height > s.Weight
+}

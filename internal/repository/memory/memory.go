@@ -36,7 +36,7 @@ func (r *Repository) GetUserByID(_ context.Context, id int) (*model.UserData, er
 }
 
 // GetUsersByIDs returns a list of users based on the IDs provided.
-func (r *Repository) GetUsersByIDs(_ context.Context, ids []int) []*model.UserData {
+func (r *Repository) GetUsersByIDs(_ context.Context, ids []int) ([]*model.UserData, error) {
 	r.RLock()
 	defer r.RUnlock()
 	var users []*model.UserData
@@ -45,7 +45,11 @@ func (r *Repository) GetUsersByIDs(_ context.Context, ids []int) []*model.UserDa
 			users = append(users, user)
 		}
 	}
-	return users
+
+	if len(users) == 0 {
+		return nil, repository.ErrNotFound
+	}
+	return users, nil
 }
 
 func (r *Repository) SearchUsers(ctx context.Context, specs ...specification.Specification) ([]*model.UserData, error) {
@@ -57,6 +61,9 @@ func (r *Repository) SearchUsers(ctx context.Context, specs ...specification.Spe
 		if andSpec.IsSatisfiedBy(ctx, user) {
 			users = append(users, user)
 		}
+	}
+	if len(users) == 0 {
+		return nil, repository.ErrNotFound
 	}
 	return users, nil
 }
