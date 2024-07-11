@@ -31,6 +31,7 @@ message GetUsersByIDsRequest {
 // Response message for GetUsersByIDs
 message GetUsersResponse {
   repeated UserData users = 1;
+  repeated int32 not_found_ids = 2;
 }
 
 // Request message for SearchUsers
