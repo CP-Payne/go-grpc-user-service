@@ -41,6 +41,7 @@ message SearchUsersRequest {
   string city = 3;
   bool married = 4;
   float height_greater_than = 5;
+  string phone = 6;
 }
 
 // User data structure

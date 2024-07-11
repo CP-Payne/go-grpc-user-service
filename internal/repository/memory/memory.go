@@ -20,7 +20,7 @@ func New() *Repository {
 		data: map[int]*model.UserData{},
 	}
 
-	rep.GenerateRandomUserData(30, 123)
+	rep.GenerateRandomUserData(5, 123)
 	return rep
 }
 
@@ -58,6 +58,7 @@ func (r *Repository) SearchUsers(ctx context.Context, specs ...specification.Spe
 	var users []*model.UserData
 	andSpec := &specification.AndSpecification{Specs: specs}
 	for _, user := range r.data {
+		fmt.Printf("user: %+v\n", user)
 		if andSpec.IsSatisfiedBy(ctx, user) {
 			users = append(users, user)
 		}

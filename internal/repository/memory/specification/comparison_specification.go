@@ -34,6 +34,7 @@ type MarriedSpecification struct {
 }
 
 func (s *MarriedSpecification) IsSatisfiedBy(ctx context.Context, user *model.UserData) bool {
+
 	return user.Married == s.Married
 }
 
@@ -42,5 +43,5 @@ type WeightGreaterThanSpecification struct {
 }
 
 func (s *WeightGreaterThanSpecification) IsSatisfiedBy(ctx context.Context, user *model.UserData) bool {
-	return user.Height > s.Weight
+	return s.Weight == 0 || user.Height > s.Weight
 }
