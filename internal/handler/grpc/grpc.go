@@ -40,10 +40,6 @@ func (h *Handler) GetUserByID(ctx context.Context, req *gen.GetUserByIDRequest) 
 	return &gen.GetUserResponse{User: model.UserdataToProto(user)}, nil
 }
 
-// TODO: What if 5 ids are provided and 3 does not exist?
-// Add a field that specifies which IDs was not found
-// Perform validation if incorrect values are provided
-// Maybe return empty list if no users is found in place of an error
 func (h *Handler) GetUsersByIDs(ctx context.Context, req *gen.GetUsersByIDsRequest) (*gen.GetUsersResponse, error) {
 	if req == nil {
 		return nil, status.Errorf(codes.InvalidArgument, "nil request")
