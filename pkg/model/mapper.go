@@ -41,6 +41,8 @@ func UsersdataToProto(u []*UserData) []*gen.UserData {
 	return protoUserData
 }
 
+// IDsInt32ToInt converts a slice of int32 into a
+// slice of int.
 func IDsInt32ToInt(ids []int32) []int {
 	convertedIDS := make([]int, len(ids))
 

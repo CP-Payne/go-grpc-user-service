@@ -13,15 +13,18 @@ import (
 	"google.golang.org/grpc/status"
 )
 
+// Handler defines a user UserData gRPC handler.
 type Handler struct {
 	gen.UnimplementedUserServiceServer
 	ctrl *userdata.Controller
 }
 
+// New creates a new UserData gRPC handler.
 func New(ctrl *userdata.Controller) *Handler {
 	return &Handler{ctrl: ctrl}
 }
 
+// GetUserByID returns user data by id.
 func (h *Handler) GetUserByID(ctx context.Context, req *gen.GetUserByIDRequest) (*gen.GetUserResponse, error) {
 	if req == nil {
 		return nil, status.Errorf(codes.InvalidArgument, "nil request")
@@ -40,6 +43,7 @@ func (h *Handler) GetUserByID(ctx context.Context, req *gen.GetUserByIDRequest) 
 	return &gen.GetUserResponse{User: model.UserdataToProto(user)}, nil
 }
 
+// GetUsersByIDs returns user data for the provided ids.
 func (h *Handler) GetUsersByIDs(ctx context.Context, req *gen.GetUsersByIDsRequest) (*gen.GetUsersResponse, error) {
 	if req == nil {
 		return nil, status.Errorf(codes.InvalidArgument, "nil request")
@@ -69,6 +73,8 @@ func (h *Handler) GetUsersByIDs(ctx context.Context, req *gen.GetUsersByIDsReque
 	return &gen.GetUsersResponse{Users: model.UsersdataToProto(users), NotFoundIds: notFoundIDs}, nil
 }
 
+// SearchUsers validates the SearchUsersRequest protobuf message and calls
+// user data based on the specification (filter) provided.
 func (h *Handler) SearchUsers(ctx context.Context, req *gen.SearchUsersRequest) (*gen.GetUsersResponse, error) {
 	decoratedHandler := decorator.ValidateSearchUsers(h.searchUsersCore)
 	resp, err := decoratedHandler(ctx, req)
@@ -78,6 +84,7 @@ func (h *Handler) SearchUsers(ctx context.Context, req *gen.SearchUsersRequest) 
 	return resp.(*gen.GetUsersResponse), nil
 }
 
+// searchUsersCore returns user data based on the provided specifications.
 func (h *Handler) searchUsersCore(ctx context.Context, req interface{}) (interface{}, error) {
 	searchReq := req.(*gen.SearchUsersRequest)
 	var isMarried *bool

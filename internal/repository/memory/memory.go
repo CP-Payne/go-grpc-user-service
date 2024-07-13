@@ -52,6 +52,7 @@ func (r *Repository) GetUsersByIDs(_ context.Context, ids []int) ([]*model.UserD
 	return users, nil
 }
 
+// SearchUsers returns a list of users based on the provided specifications.
 func (r *Repository) SearchUsers(ctx context.Context, specs ...specification.Specification) ([]*model.UserData, error) {
 	r.RLock()
 	defer r.RUnlock()
