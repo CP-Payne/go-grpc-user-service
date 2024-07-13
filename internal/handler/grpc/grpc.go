@@ -86,7 +86,7 @@ func (h *Handler) searchUsersCore(ctx context.Context, req interface{}) (interfa
 	} else {
 		isMarried = nil
 	}
-	users, err := h.ctrl.SearchUsers(ctx, searchReq.FirstName, searchReq.LastName, searchReq.City, isMarried, searchReq.HeightGreaterThan)
+	users, err := h.ctrl.SearchUsers(ctx, searchReq.FirstName, searchReq.LastName, searchReq.City, searchReq.Phone, isMarried, searchReq.HeightGreaterThan)
 	if err != nil && errors.Is(err, userdata.ErrNotFound) {
 		return nil, status.Errorf(codes.NotFound, "no users found")
 	} else if err != nil {

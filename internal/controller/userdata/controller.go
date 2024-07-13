@@ -40,12 +40,13 @@ func (c *Controller) GetUsersByIDs(ctx context.Context, ids []int) ([]*model.Use
 	return res, err
 }
 
-func (c *Controller) SearchUsers(ctx context.Context, firstName, lastName, city string, married *bool, weight float32) ([]*model.UserData, error) {
+func (c *Controller) SearchUsers(ctx context.Context, firstName, lastName, city, phone string, married *bool, weight float32) ([]*model.UserData, error) {
 	specs := []specification.Specification{
 		&specification.FirstNameSpecification{FirstName: firstName},
 		&specification.LastNameSpecification{LastName: lastName},
 		&specification.CitySpecification{City: city},
 		&specification.WeightGreaterThanSpecification{Weight: weight},
+		&specification.PhoneSpecification{Phone: phone},
 	}
 
 	if married != nil {

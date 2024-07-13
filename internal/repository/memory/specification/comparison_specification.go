@@ -48,3 +48,11 @@ func (s *MarriedSpecification) IsSatisfiedBy(ctx context.Context, user *model.Us
 	}
 	return user.Married == s.Married
 }
+
+type PhoneSpecification struct {
+	Phone string
+}
+
+func (s *PhoneSpecification) IsSatisfiedBy(ctx context.Context, user *model.UserData) bool {
+	return s.Phone == "" || user.Phone == s.Phone
+}
