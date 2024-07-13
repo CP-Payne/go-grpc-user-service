@@ -29,19 +29,22 @@ func (s *CitySpecification) IsSatisfiedBy(ctx context.Context, user *model.UserD
 	return s.City == "" || user.City == s.City
 }
 
-type MarriedSpecification struct {
-	Married bool
-}
-
-func (s *MarriedSpecification) IsSatisfiedBy(ctx context.Context, user *model.UserData) bool {
-
-	return user.Married == s.Married
-}
-
 type WeightGreaterThanSpecification struct {
 	Weight float32
 }
 
 func (s *WeightGreaterThanSpecification) IsSatisfiedBy(ctx context.Context, user *model.UserData) bool {
 	return s.Weight == 0 || user.Height > s.Weight
+}
+
+type MarriedSpecification struct {
+	Married bool
+	IsSet   bool // Indicates whether the Married value has been set
+}
+
+func (s *MarriedSpecification) IsSatisfiedBy(ctx context.Context, user *model.UserData) bool {
+	if !s.IsSet {
+		return true
+	}
+	return user.Married == s.Married
 }

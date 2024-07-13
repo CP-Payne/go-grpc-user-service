@@ -40,14 +40,20 @@ func (c *Controller) GetUsersByIDs(ctx context.Context, ids []int) ([]*model.Use
 	return res, err
 }
 
-func (c *Controller) SearchUsers(ctx context.Context, firstName, lastName, city string, married bool, weight float32) ([]*model.UserData, error) {
+func (c *Controller) SearchUsers(ctx context.Context, firstName, lastName, city string, married *bool, weight float32) ([]*model.UserData, error) {
 	specs := []specification.Specification{
 		&specification.FirstNameSpecification{FirstName: firstName},
 		&specification.LastNameSpecification{LastName: lastName},
 		&specification.CitySpecification{City: city},
-		&specification.MarriedSpecification{Married: married},
 		&specification.WeightGreaterThanSpecification{Weight: weight},
 	}
+
+	if married != nil {
+		specs = append(specs, &specification.MarriedSpecification{Married: *married, IsSet: true})
+	} else {
+		specs = append(specs, &specification.MarriedSpecification{IsSet: false})
+	}
+
 	res, err := c.repo.SearchUsers(ctx, specs...)
 	if err != nil && errors.Is(err, repository.ErrNotFound) {
 		return nil, ErrNotFound

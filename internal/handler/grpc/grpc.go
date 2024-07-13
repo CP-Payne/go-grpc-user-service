@@ -80,7 +80,13 @@ func (h *Handler) SearchUsers(ctx context.Context, req *gen.SearchUsersRequest) 
 
 func (h *Handler) searchUsersCore(ctx context.Context, req interface{}) (interface{}, error) {
 	searchReq := req.(*gen.SearchUsersRequest)
-	users, err := h.ctrl.SearchUsers(ctx, searchReq.FirstName, searchReq.LastName, searchReq.City, searchReq.Married, searchReq.HeightGreaterThan)
+	var isMarried *bool
+	if searchReq.Married != nil {
+		isMarried = &searchReq.GetMarried().Value
+	} else {
+		isMarried = nil
+	}
+	users, err := h.ctrl.SearchUsers(ctx, searchReq.FirstName, searchReq.LastName, searchReq.City, isMarried, searchReq.HeightGreaterThan)
 	if err != nil && errors.Is(err, userdata.ErrNotFound) {
 		return nil, status.Errorf(codes.NotFound, "no users found")
 	} else if err != nil {
