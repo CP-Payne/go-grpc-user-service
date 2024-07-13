@@ -9,6 +9,7 @@ import (
 	"google.golang.org/grpc/status"
 )
 
+// ValidateSearchUsers validates the input of SearchUsersRequest
 func ValidateSearchUsers(ctx context.Context, req interface{}) error {
 	searchReq, ok := req.(*gen.SearchUsersRequest)
 	if !ok {
@@ -26,6 +27,9 @@ func ValidateSearchUsers(ctx context.Context, req interface{}) error {
 	}
 	if err := validation.ValidateHeight(searchReq.HeightGreaterThan); err != nil {
 		return status.Errorf(codes.InvalidArgument, "invalid height: %v", err)
+	}
+	if err := validation.ValidatePhone(searchReq.Phone); err != nil {
+		return status.Errorf(codes.InvalidArgument, "invalid phone: %v", err)
 	}
 
 	return nil
