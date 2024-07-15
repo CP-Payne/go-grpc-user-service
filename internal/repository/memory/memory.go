@@ -20,7 +20,7 @@ func New() *Repository {
 		data: map[int]*model.UserData{},
 	}
 
-	rep.GenerateRandomUserData(5, 123)
+	rep.GenerateRandomUserData(50, 123)
 	return rep
 }
 
